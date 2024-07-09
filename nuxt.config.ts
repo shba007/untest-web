@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     "@nuxt/fonts",
     "@nuxt/image",
@@ -14,7 +15,9 @@ export default defineNuxtConfig({
     "nuxt-gtag",
     "nuxt-icons",
   ],
+
   ssr: false,
+
   /*  nitro: {
      experimental: {
        websocket: true
@@ -26,15 +29,18 @@ export default defineNuxtConfig({
       authAccessSecret: ''
     },
   },
+
   colorMode: {
     preference: 'system',
     fallback: 'light',
     classSuffix: '',
   },
+
   site: {
     name: 'Untest',
     url: 'https://untest.monalisa-bairagi.com',
   },
+
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
@@ -191,7 +197,10 @@ export default defineNuxtConfig({
       type: 'module',
     },
   },
+
   gtag: {
     id: 'G-JZ7WJFETDL'
   },
+
+  compatibilityDate: '2024-07-09',
 })

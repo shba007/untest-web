@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "~/lib/prisma";
 import { Question } from "~/utils/models";
 import { TestData } from "./answer/[id].post";
-
-const prisma = new PrismaClient()
 
 function shuffle<T>(array: T[]): T[] {
   const shuffledArray = [...array];

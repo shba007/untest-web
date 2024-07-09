@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import confetti from 'canvas-confetti';
 
+const route = useRoute()
+
 const userStore = useUserStore()
 const testStore = useTestStore()
 
-const { data, pending, error } = await useFetch(`/api/test`, {
-  method: 'post', body: testStore.getResult(), onRequest: authInterceptor
-})
+const testId = route.params.id
 
-onMounted(() => {
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 }
-  })
+// const { data, pending, error } = await useFetch(`/api/test`, {
+//   method: 'post', body: testStore.getResult(), onRequest: authInterceptor
+// })
+const { data, pending, error } = useFetch(`/api/result/${testId}`, { onRequest: authInterceptor })
+
+watch(data, (value) => {
+  if (value && value.correctCount >= 8)
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    })
 })
 </script>
 

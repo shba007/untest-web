@@ -5,12 +5,15 @@ const router = useRouter()
 const testStore = useTestStore()
 const testId = route.params.id
 
-const { data, pending, error } = await useFetch(`/api/test/${testId}`, { method: 'get', onRequest: authInterceptor })
+const { data, pending, error } = useFetch(`/api/test/${testId}`, { method: 'get', onRequest: authInterceptor })
 
-if (data.value) {
+watch(data, (value) => {
+  if (!value)
+    return
+
   testStore.id = data.value.id
   testStore.questions = data.value.questions
-}
+})
 
 const { count: correctCount, inc: incCorrect } = useCounter(0, { min: 0, max: 10 })
 const { count: incorrectCount, inc: incIncorrect } = useCounter(0, { min: 0, max: 10 })
@@ -50,7 +53,7 @@ async function onSubmit() {
   isSubmitted.value = true
   future.value = now.value.getTime() + 2000
 
-  await useFetch(`/api/test/answer/${testId}`, { method: 'post', body: answerData, onRequest: authInterceptor })
+  await $fetch(`/api/test/answer/${testId}`, { method: 'post', body: answerData, onRequest: authInterceptor })
 }
 
 function calculateState(index: number) {
@@ -66,9 +69,12 @@ function calculateState(index: number) {
     return 'neutral'
 }
 
-watch(testStore.answers, (value) => {
+watch(testStore.answers, async (value) => {
   if (value.length >= 10) {
-    router.push({ path: '/result' })
+    const { data, pending, error } = await useFetch(`/api/test`, {
+      method: 'post', body: testStore.getResult(), onRequest: authInterceptor
+    })
+    router.push({ path: `/result/${testId}` })
   }
 })
 </script>
@@ -82,9 +88,12 @@ watch(testStore.answers, (value) => {
       enter-from-class="transform translate-x-20  opacity-0" enter-to-class="transform translate-x-0 opacity-100"
       leave-active-class="transition duration-200 ease-in" leave-from-class="transform translate-x-0  opacity-100"
       leave-to-class="transform -translate-x-20  opacity-0">
-      <div class="flex-1 flex flex-col" :key="item.id">
-        <h1 class="grow text-xl font-medium">{{ item.question }}</h1>
-        <ul class="grow flex flex-col gap-6">
+      <div class="flex-1 flex flex-col gap-4" v-if="item" :key="item.id">
+        <h1
+          class="grow text-lg font-medium bg-dark-500 overflow-y-auto px-4 py-2 rounded-xl scrollbar-hidden max-h-[263px]">
+          {{ item.question }}
+        </h1>
+        <ul class="flex flex-col gap-6">
           <li v-for="option, index in item.options">
             <Option :index="index + 1" :value="option" :state="calculateState(index)" @click="onOptionChange(index)" />
           </li>

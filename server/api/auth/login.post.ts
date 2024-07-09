@@ -1,7 +1,7 @@
-import { Prisma, PrismaClient } from "@prisma/client"
+import prisma from "~/lib/prisma";
+import { Prisma } from "@prisma/client"
 import JWT from 'jsonwebtoken'
 
-const prisma = new PrismaClient()
 
 interface Request {
   email: string

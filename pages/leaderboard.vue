@@ -24,24 +24,19 @@ const lastCount = computed(() => {
   return datePreset.count
 })
 
-/* const dateRageEnd = computed(() => {
-  const datePreset = datePresets.find(({ id }) => id == activeDatePresetId.value)!
-  return datePreset.dateEnd
-})
- */
-
 const { data: users } = await useFetch('/api/user', { method: 'get', onRequest: authInterceptor, query: { lastCount: lastCount } })
 </script>
 
 <template>
-  <main class="flex flex-col gap-8 items-center justify-start h-screen">
+  <main class="flex flex-col gap-8 items-center justify-start h-screen overflow-hidden">
     <h1 class="text-xl text-center align-middle">Leaderboard</h1>
     <div class="flex gap-2 w-full">
       <button v-for="{ id, title } in lastCountPresets" :key="id" class="flex-1 px-2 py-3  rounded-full capitalize"
-        :class="activeLastCountId === id ? 'bg-primary-500' : 'bg-dark-500'" @click="activeLastCountId = id">{{ title
-        }}</button>
+        :class="activeLastCountId === id ? 'bg-primary-500' : 'bg-dark-500'" @click="activeLastCountId = id">
+        {{ title }}
+      </button>
     </div>
-    <ul v-if="users" class="flex flex-col gap-6 w-full">
+    <ul v-if="users" class="grow relative flex flex-col gap-6 w-full overflow-y-scroll">
       <li v-for="{ id, name, stats }, index in users" :key="id"
         class="flex items-center justify-between gap-3 p-3 rounded-full bg-dark-500">
         <span class="flex justify-center items-center h-full rounded-full aspect-square text-lg font-semi-bold"
@@ -52,7 +47,8 @@ const { data: users } = await useFetch('/api/user', { method: 'get', onRequest: 
         <div class="ml-auto flex gap-3">
           <PointCard :point="stats.totalCorrectCount" color="blue" topic="Correct" size="compact" />
           <!-- <PointCard :point="stats.totalIncorrectCount" color="red" topic="Incorrect" size="compact" /> -->
-          <PointCard :point="stats.totalDuration" color="green" topic="Duration" size="compact" />
+          <PointCard :point="formatTime(convertSeconds(stats.totalDuration))" color="green" topic="Duration"
+            size="compact" />
         </div>
       </li>
     </ul>

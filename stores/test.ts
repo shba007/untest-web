@@ -13,7 +13,7 @@ export const useTestStore = defineStore('test', () => {
       return (question.answer === answer) ? [correctCount + 1, incorrectCount] : [correctCount, incorrectCount + 1]
     }, [0, 0])
 
-    const duration = counter.value
+    const duration = formatTime(convertSeconds(counter.value))
 
     return {
       correctCount,

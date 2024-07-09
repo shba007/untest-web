@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client"
+import prisma from "~/lib/prisma";
 import { readAuth } from "~/server/utils/authHandler";
 import { TestData } from "./answer/[id].post";
-
-const prisma = new PrismaClient()
 
 interface Request {
   testId: string;

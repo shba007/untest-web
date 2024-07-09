@@ -1,5 +1,4 @@
 import { PrismaClient, Role, Tag } from "@prisma/client";
-import { faker } from '@faker-js/faker';
 
 import fs from "node:fs";
 import path from "node:path";
@@ -142,7 +141,7 @@ async function createTest() {
       questions: {
         createMany: {
           data: questions.slice(0, 10).map(({ question, options, answer, tags }, index) => ({
-            id: index + 71,
+            id: index + 181,
             question,
             options,
             answer,
@@ -158,6 +157,86 @@ async function createTest() {
   return test
 }
 
+async function printResults() {
+  const userResultMap = new Map()
+
+  const tests = await prisma.test.findMany({
+    orderBy: {
+      createdAt: 'asc'
+    },
+    include: {
+      results: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      }
+    }
+  })
+
+  for (const { results } of tests) {
+    for (const { user, correctCount, duration } of results) {
+      let data = userResultMap.get(user.id)
+
+      if (data)
+        data.push({
+          name: user.name,
+          correct: correctCount,
+          duration
+        })
+      else
+        data = [{
+          name: user.name,
+          correct: correctCount,
+          duration
+        }]
+
+      userResultMap.set(user.id, data)
+    }
+  }
+
+  const userResults = [...userResultMap.values()].map(person => {
+    return {
+      name: person[0].name,
+      tests: person.map((data: { correct: number; duration: number; }, index: number) => ({
+        test: index + 1,
+        correct: data.correct,
+        duration: data.duration
+      }))
+      // totalCorrect
+      // totalDuration
+    }
+  })
+
+  for (let userResult of userResults) {
+    console.log("------------------")
+    console.log("Student Name:", userResult.name)
+    console.log("Test:\n")
+    // console.log(userResult.tests)
+    let totalWeekCorrect = 0, totalWeekDuration = 0
+
+    for (let [index, test] of userResult.tests.entries()) {
+      console.log('Correct', test.correct, '\t\t', 'Duration', test.duration)
+
+      totalWeekCorrect += test.correct
+      totalWeekDuration += test.duration
+
+      if (!((index + 1) % 7)) {
+        console.log(`\n--------- ${Math.floor(index / 7) + 1} Week ---------`)
+        console.log("\n======", 'Total Correct', totalWeekCorrect, '\t\t', 'Total Duration', totalWeekDuration, "=======\n")
+        totalWeekCorrect = 0
+        totalWeekDuration = 0
+      }
+    }
+
+    console.log("------------------")
+  }
+}
+
 async function main() {
   // const users = await createUsers()
   // const tests = await createTests()
@@ -166,7 +245,11 @@ async function main() {
 
   // await createTestUser()
   const test = await createTest()
+
+  // await printResults()
 }
+
+
 
 main()
   .then(async () => {

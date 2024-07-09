@@ -1,6 +1,5 @@
-import { PrismaClient, Role } from "@prisma/client"
-
-const prisma = new PrismaClient()
+import prisma from "~/lib/prisma";
+import { Role } from "@prisma/client";
 
 interface Response {
   id: string,
@@ -34,6 +33,9 @@ export default defineEventHandler<Promise<Response[]>>(async (event) => {
     })
 
     const testIds = (await prisma.test.findMany({
+      where: {
+        isDraft: false
+      },
       select: {
         id: true
       },
@@ -43,9 +45,10 @@ export default defineEventHandler<Promise<Response[]>>(async (event) => {
       take: lastCount
     })).map(({ id }) => id)
 
+
     const users = await prisma.user.findMany({
       where: user.role === 'STUDENT' ? {
-        role: Role.STUDENT
+        role: Role.STUDENT,
       } : {},
       include: {
         results: {
