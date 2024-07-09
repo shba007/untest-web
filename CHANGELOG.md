@@ -1,5 +1,11 @@
 # untest
 
+## 0.2.6
+
+### Patch Changes
+
+- f9cdc9e: feat: time formating added, ui fixed
+
 ## 0.2.5
 
 ### Patch Changes
