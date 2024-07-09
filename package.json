@@ -2,7 +2,7 @@
   "name": "untest",
   "description": "Learn by quick question answer competition with peers",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "type": "module",
   "engines": {
