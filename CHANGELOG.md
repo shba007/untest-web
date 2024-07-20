@@ -1,5 +1,11 @@
 # untest
 
+## 0.3.0
+
+### Minor Changes
+
+- 9e48e63: chore: Containerize
+
 ## 0.2.6
 
 ### Patch Changes
