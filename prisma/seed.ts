@@ -1,14 +1,15 @@
-import { PrismaClient, Role, Tag } from "@prisma/client";
+import type { Role, Tag } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
-import fs from "node:fs";
-import path from "node:path";
-import yaml from "yaml";
+import fs from 'node:fs'
+import path from 'node:path'
+import yaml from 'yaml'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 function readFileConstractor<T>(fileName: string, type: 'seed' | 'backup') {
   const filePath = path.join(process.cwd(), `/prisma/data/${type}/${fileName}.yml`)
-  const fileContents = fs.readFileSync(filePath, "utf8");
+  const fileContents = fs.readFileSync(filePath, 'utf8')
   return yaml.parse(fileContents) as T[]
 }
 
@@ -17,15 +18,15 @@ function readFile<T>(fileName: string) {
 }
 
 interface User {
-  id: string,
-  name: string,
-  email: string,
-  image: string,
-  role: string,
+  id: string
+  name: string
+  email: string
+  image: string
+  role: string
   createdAt: Date
   updatedAt: Date
   results: {
-    testId: string;
+    testId: string
     date: string
     correctCount: number
     incorrectCount: number
@@ -34,10 +35,10 @@ interface User {
 }
 
 interface Test {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  questions: Question[];
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  questions: Question[]
 }
 
 async function createUsers() {
@@ -53,8 +54,8 @@ async function createUsers() {
       image,
       role: role.toUpperCase() as Role,
       createdAt,
-      updatedAt
-    }))
+      updatedAt,
+    })),
   })
 
   const users = await prisma.user.findMany()
@@ -68,7 +69,7 @@ async function createTests() {
   const fileTests = readFile<Omit<Test, 'updatedAt'>>('tests')
 
   await prisma.test.createMany({
-    data: fileTests.map(({ id, createdAt }) => ({ id, createdAt }))
+    data: fileTests.map(({ id, createdAt }) => ({ id, createdAt })),
   })
 
   const tests = await prisma.test.findMany({})
@@ -80,7 +81,7 @@ async function createTests() {
     isDraft,
     createdAt,
     updatedAt,
-    questions: fileTests.find((test) => test.id === id)!.questions
+    questions: fileTests.find((test) => test.id === id)!.questions,
   }))
 }
 
@@ -95,8 +96,9 @@ async function createQuestions() {
         question,
         options,
         answer,
-        tags: tags.map((category) => category.toUpperCase()) as Tag[]
-      })))
+        tags: tags.map((category) => category.toUpperCase()) as Tag[],
+      }))
+    ),
   })
 }
 
@@ -104,9 +106,11 @@ async function createResults() {
   const fileUsers = readFile<User>('users')
 
   await prisma.result.createMany({
-    data: [...fileUsers.flatMap(({ id, results }) => {
-      return results.map((result) => ({ ...result, userId: id }))
-    })]
+    data: [
+      ...fileUsers.flatMap(({ id, results }) => {
+        return results.map((result) => ({ ...result, userId: id }))
+      }),
+    ],
   })
 
   const results = await prisma.result.findMany()
@@ -120,7 +124,7 @@ async function createTestUser() {
   const user = await prisma.user.create({
     data: {
       name: 'Test User 1',
-    }
+    },
   })
 
   console.log(user)
@@ -130,7 +134,7 @@ async function createTestUser() {
 
 async function createTest() {
   const filePath = path.join(process.cwd(), `/prisma/data/questions.json`)
-  const fileContents = fs.readFileSync(filePath, "utf8");
+  const fileContents = fs.readFileSync(filePath, 'utf8')
   const questions = JSON.parse(fileContents) as Question[]
 
   console.log({ questions })
@@ -145,11 +149,11 @@ async function createTest() {
             question,
             options,
             answer,
-            tags: tags.map((tag) => tag.toUpperCase()) as Tag[]
-          }))
-        }
-      }
-    }
+            tags: tags.map((tag) => tag.toUpperCase()) as Tag[],
+          })),
+        },
+      },
+    },
   })
 
   console.log({ test })
@@ -162,7 +166,7 @@ async function printResults() {
 
   const tests = await prisma.test.findMany({
     orderBy: {
-      createdAt: 'asc'
+      createdAt: 'asc',
     },
     include: {
       results: {
@@ -170,12 +174,12 @@ async function printResults() {
           user: {
             select: {
               id: true,
-              name: true
-            }
-          }
-        }
-      }
-    }
+              name: true,
+            },
+          },
+        },
+      },
+    },
   })
 
   for (const { results } of tests) {
@@ -186,40 +190,43 @@ async function printResults() {
         data.push({
           name: user.name,
           correct: correctCount,
-          duration
+          duration,
         })
       else
-        data = [{
-          name: user.name,
-          correct: correctCount,
-          duration
-        }]
+        data = [
+          {
+            name: user.name,
+            correct: correctCount,
+            duration,
+          },
+        ]
 
       userResultMap.set(user.id, data)
     }
   }
 
-  const userResults = [...userResultMap.values()].map(person => {
+  const userResults = [...userResultMap.values()].map((person) => {
     return {
       name: person[0].name,
-      tests: person.map((data: { correct: number; duration: number; }, index: number) => ({
+      tests: person.map((data: { correct: number; duration: number }, index: number) => ({
         test: index + 1,
         correct: data.correct,
-        duration: data.duration
-      }))
+        duration: data.duration,
+      })),
       // totalCorrect
       // totalDuration
     }
   })
 
-  for (let userResult of userResults) {
-    console.log("------------------")
-    console.log("Student Name:", userResult.name)
-    console.log("Test:\n")
+  for (const userResult of userResults) {
+    console.log('------------------')
+    console.log('Student Name:', userResult.name)
+    console.log('Test:\n')
     // console.log(userResult.tests)
-    let totalWeekCorrect = 0, totalWeekDuration = 0
+    let totalWeekCorrect = 0,
+      totalWeekDuration = 0
 
-    for (let [index, test] of userResult.tests.entries()) {
+    for (const [index, test] of userResult.tests.entries()) {
       console.log('Correct', test.correct, '\t\t', 'Duration', test.duration)
 
       totalWeekCorrect += test.correct
@@ -227,13 +234,13 @@ async function printResults() {
 
       if (!((index + 1) % 7)) {
         console.log(`\n--------- ${Math.floor(index / 7) + 1} Week ---------`)
-        console.log("\n======", 'Total Correct', totalWeekCorrect, '\t\t', 'Total Duration', totalWeekDuration, "=======\n")
+        console.log('\n======', 'Total Correct', totalWeekCorrect, '\t\t', 'Total Duration', totalWeekDuration, '=======\n')
         totalWeekCorrect = 0
         totalWeekDuration = 0
       }
     }
 
-    console.log("------------------")
+    console.log('------------------')
   }
 }
 
@@ -249,14 +256,12 @@ async function main() {
   // await printResults()
 }
 
-
-
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })

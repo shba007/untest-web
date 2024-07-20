@@ -1,11 +1,10 @@
-import prisma from "~/lib/prisma";
+import prisma from '~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   const testId = getRouterParam(event, 'id')
 
   try {
-    if (!testId)
-      throw createError({ statusCode: 400, statusMessage: 'Test Id not found' })
+    if (!testId) throw createError({ statusCode: 400, statusMessage: 'Test Id not found' })
 
     const userId = readAuth(event)
 
@@ -13,9 +12,9 @@ export default defineEventHandler(async (event) => {
       where: {
         userId_testId: {
           userId,
-          testId
-        }
-      }
+          testId,
+        },
+      },
     })
 
     // TODO: Test Id not found
@@ -24,6 +23,6 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     console.error(`API result/${testId} GET`, error)
 
-    throw createError({ statusCode: 500, statusMessage: "Some Unknown Error Found" })
+    throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }
 })

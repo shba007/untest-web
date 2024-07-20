@@ -1,4 +1,4 @@
-import prisma from "~/lib/prisma";
+import prisma from '~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -7,37 +7,45 @@ export default defineEventHandler(async (event) => {
     // TODO add Role to JWT
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        id: userId
-      }, include: {
-        results: true
-      }
+        id: userId,
+      },
+      include: {
+        results: true,
+      },
     })
 
     const tests = await prisma.test.findMany({
-      where: user.role === 'STUDENT' ? {
-        isDraft: false
-      } : {},
+      where:
+        user.role === 'STUDENT'
+          ? {
+              isDraft: false,
+            }
+          : {},
       orderBy: {
-        createdAt: "asc"
-      }, select: {
+        createdAt: 'asc',
+      },
+      select: {
         id: true,
         createdAt: true,
         updatedAt: true,
-        isDraft: true
-      }
+        isDraft: true,
+      },
     })
 
     const userTests = user.results.map(({ testId }) => testId)
 
     return tests.map(({ id, createdAt, updatedAt, isDraft }) => ({
-      id, createdAt, updatedAt, isDraft, isComplete: userTests.includes(id),
+      id,
+      createdAt,
+      updatedAt,
+      isDraft,
+      isComplete: userTests.includes(id),
     }))
   } catch (error: any) {
-    console.error("API test GET", error)
+    console.error('API test GET', error)
 
-    if (error?.statusCode)
-      throw error
+    if (error?.statusCode) throw error
 
-    throw createError({ statusCode: 500, statusMessage: "Some Unknown Error Found" })
+    throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }
 })

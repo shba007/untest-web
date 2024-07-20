@@ -5,13 +5,15 @@ export const useTestStore = defineStore('test', () => {
   const { counter, resume, pause, reset: counterReset, isActive: counterIsActive } = useInterval(1000, { controls: true })
 
   const stats = computed(() => {
-    const [correctCount, incorrectCount] = answers.value.reduce(([correctCount, incorrectCount], { id, answer }) => {
-      const question = questions.value.find((question) => question.id === id)
-      if (!question)
-        return [correctCount, incorrectCount]
+    const [correctCount, incorrectCount] = answers.value.reduce(
+      ([correctCount, incorrectCount], { id, answer }) => {
+        const question = questions.value.find((question) => question.id === id)
+        if (!question) return [correctCount, incorrectCount]
 
-      return (question.answer === answer) ? [correctCount + 1, incorrectCount] : [correctCount, incorrectCount + 1]
-    }, [0, 0])
+        return question.answer === answer ? [correctCount + 1, incorrectCount] : [correctCount, incorrectCount + 1]
+      },
+      [0, 0]
+    )
 
     const duration = formatTime(convertSeconds(counter.value))
 
@@ -20,7 +22,7 @@ export const useTestStore = defineStore('test', () => {
       incorrectCount,
       duration,
     }
-  },)
+  })
 
   function addAnswer(answer: Answer) {
     if (!counterIsActive) {
@@ -37,7 +39,7 @@ export const useTestStore = defineStore('test', () => {
 
     return {
       testId: id.value,
-      answers: answers.value
+      answers: answers.value,
     }
   }
 
@@ -48,8 +50,12 @@ export const useTestStore = defineStore('test', () => {
   }
 
   return {
-    id, questions, answers,
+    id,
+    questions,
+    answers,
     stats,
-    addAnswer, getResult, reset
+    addAnswer,
+    getResult,
+    reset,
   }
 })

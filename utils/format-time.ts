@@ -1,40 +1,28 @@
-export default function (time: {
-  seconds: number,
-  minutes: number,
-  hours: number,
-  days: number,
-  months: number,
-  years: number
-}) {
+export default function (time: { seconds: number; minutes: number; hours: number; days: number; months: number; years: number }) {
   let timeString = ''
 
   if (time.years) {
-    timeString += time.years + "Y "
+    timeString += time.years + 'Y '
 
-    if (time.months)
-      timeString += time.months + "M "
+    if (time.months) timeString += time.months + 'M '
   } else if (time.months) {
-    timeString += time.months + "M "
+    timeString += time.months + 'M '
 
-    if (time.days)
-      timeString += time.days + "D "
+    if (time.days) timeString += time.days + 'D '
   } else if (time.days) {
-    timeString += time.days + "D "
+    timeString += time.days + 'D '
 
-    if (time.hours)
-      timeString += time.hours + "h "
+    if (time.hours) timeString += time.hours + 'h '
   } else if (time.hours) {
-    timeString += time.hours + "h "
+    timeString += time.hours + 'h '
 
-    if (time.minutes)
-      timeString += time.minutes + "m "
+    if (time.minutes) timeString += time.minutes + 'm '
   } else if (time.minutes) {
-    timeString += time.minutes + "m "
+    timeString += time.minutes + 'm '
 
-    if (time.seconds)
-      timeString += time.seconds + "s "
+    if (time.seconds) timeString += time.seconds + 's '
   } else {
-    timeString += time.seconds + "s "
+    timeString += time.seconds + 's '
   }
 
   return timeString.slice(0, -1)

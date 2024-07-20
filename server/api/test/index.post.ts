@@ -1,9 +1,9 @@
-import prisma from "~/lib/prisma";
-import { readAuth } from "~/server/utils/auth-handler";
-import { TestData } from "./answer/[id].post";
+import prisma from '~/lib/prisma'
+import { readAuth } from '~/server/utils/auth-handler'
+import type { TestData } from './answer/[id].post'
 
 interface Request {
-  testId: string;
+  testId: string
 }
 
 export default defineEventHandler(async (event) => {
@@ -13,8 +13,7 @@ export default defineEventHandler(async (event) => {
     const userId = readAuth(event)
 
     const testData = await useStorage('data').getItem<TestData>(`test:${userId}:${testId}`)
-    if (!testData)
-      throw createError({ statusCode: 400, statusMessage: 'testData is not defined' })
+    if (!testData) throw createError({ statusCode: 400, statusMessage: 'testData is not defined' })
 
     const { startTime, answers } = testData
     const endTime = Date.now()
@@ -22,17 +21,19 @@ export default defineEventHandler(async (event) => {
     const { questions } = await prisma.test.findUniqueOrThrow({
       where: {
         id: testId,
-      }, include: { questions: true }
+      },
+      include: { questions: true },
     })
 
-    const [correctCount, incorrectCount] = answers.reduce(([correctCount, incorrectCount], { id, answer }) => {
-      if (answer === questions.find((question) => question.id.toString() === id)?.answer)
-        correctCount++
-      else
-        incorrectCount++
+    const [correctCount, incorrectCount] = answers.reduce(
+      ([correctCount, incorrectCount], { id, answer }) => {
+        if (answer === questions.find((question) => question.id.toString() === id)?.answer) correctCount++
+        else incorrectCount++
 
-      return [correctCount, incorrectCount]
-    }, [0, 0])
+        return [correctCount, incorrectCount]
+      },
+      [0, 0]
+    )
 
     const result = await prisma.result.create({
       data: {
@@ -40,17 +41,16 @@ export default defineEventHandler(async (event) => {
         testId,
         correctCount,
         incorrectCount,
-        duration: (endTime - startTime) / 1000
-      }
+        duration: (endTime - startTime) / 1000,
+      },
     })
 
     return result
   } catch (error: any) {
     console.error(`API result POST`, error)
 
-    if (error?.statusCode)
-      throw error
+    if (error?.statusCode) throw error
 
-    throw createError({ statusCode: 500, statusMessage: "Some Unknown Error Found" })
+    throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }
 })

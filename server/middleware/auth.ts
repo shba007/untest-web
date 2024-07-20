@@ -1,4 +1,4 @@
-import JWT from "jsonwebtoken";
+import JWT from 'jsonwebtoken'
 
 interface Token {
   id: string
@@ -10,10 +10,9 @@ export default defineEventHandler((event) => {
     const config = useRuntimeConfig()
     let token = event.node.req.headers.authorization
 
-    if (!token)
-      throw Error('Token not found')
+    if (!token) throw Error('Token not found')
 
-    token = token.split(" ")[1]
+    token = token.split(' ')[1]
     try {
       const { id } = JWT.verify(token, config.private.authAccessSecret) as Token
       event.context.auth = { user: id }

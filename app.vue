@@ -1,28 +1,28 @@
 <script setup lang="ts">
 const title = `Untest`
 const description = `Learn by quick question answer competition with peers`
-const url = "https://untest.monalisa-bairagi.com"
+const url = 'https://untest.monalisa-bairagi.com'
 
 useSeoMeta({
-  ogType: "profile",
+  ogType: 'profile',
   title: title,
   ogTitle: title,
   description: description,
   ogDescription: description,
-  ogImage: url + "/previews/landing.webp",
+  ogImage: url + '/previews/landing.webp',
   ogImageWidth: 1280,
   ogImageHeight: 640,
   ogUrl: url,
   fbAppId: 966242223397117,
-  twitterCard: "summary_large_image",
-  colorScheme: "dark light",
+  twitterCard: 'summary_large_image',
+  colorScheme: 'dark light',
 })
 
 useSchemaOrg([
   defineWebPage({
     datePublished: new Date(2024, 4, 30).toISOString(),
     dateModified: new Date(2024, 4, 30).toISOString(),
-    author: "Shirsendu Bairagi",
+    author: 'Shirsendu Bairagi',
   }),
   defineWebSite({
     url: url,
@@ -48,7 +48,7 @@ useSchemaOrg([
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  scrollbar-width: 6px
+  scrollbar-width: 6px;
 }
 
 *::-webkit-scrollbar {
@@ -60,14 +60,14 @@ useSchemaOrg([
 }
 
 html {
-  @apply relative scroll-smooth overflow-x-hidden;
+  @apply relative overflow-x-hidden scroll-smooth;
 }
 
 body {
-  @apply relative min-h-screen text-white bg-dark-400 overflow-x-hidden;
+  @apply relative min-h-screen overflow-x-hidden bg-dark-400 text-white;
 }
 
-.nuxt-icon>svg {
+.nuxt-icon > svg {
   @apply !m-0;
 }
 

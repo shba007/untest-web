@@ -24,10 +24,9 @@ async function onSubmit(value: string) {
 </script>
 
 <template>
-  <main class="flex flex-col gap-2 items-center justify-center h-screen">
-    <AppToast v-if="isLoginError" @close="isLoginError = false" type="alert"
-      message="Login Failed enter correct email id" />
-    <h1 class="my-auto text-xl text-center align-middle">Welcome to Untest</h1>
+  <main class="flex h-screen flex-col items-center justify-center gap-2">
+    <AppToast v-if="isLoginError" type="alert" message="Login Failed enter correct email id" @close="isLoginError = false" />
+    <h1 class="my-auto text-center align-middle text-xl">Welcome to Untest</h1>
     <ClientOnly>
       <AppInput type="email" placeholder="Email Address" title="Next" @submit="onSubmit" />
     </ClientOnly>
