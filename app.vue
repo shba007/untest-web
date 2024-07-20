@@ -33,11 +33,14 @@ useSchemaOrg([
 </script>
 
 <template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+  <NuxtRouteAnnouncer />
+  <!-- <NuxtPwaManifest /> -->
+  <!-- <NuxtPwaAssets /> -->
+  <!-- <NuxtLoadingIndicator /> -->
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+  <!-- <AppInstallPrompt /> -->
 </template>
 
 <style>
@@ -49,7 +52,7 @@ useSchemaOrg([
 }
 
 *::-webkit-scrollbar {
-  @apply block w-[6px] bg-dark-400;
+  @apply block size-[6px] bg-dark-400;
 }
 
 *::-webkit-scrollbar-thumb {

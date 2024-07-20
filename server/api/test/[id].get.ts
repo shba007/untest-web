@@ -1,17 +1,7 @@
 import prisma from "~/lib/prisma";
 import { Question } from "~/utils/models";
 import { TestData } from "./answer/[id].post";
-
-function shuffle<T>(array: T[]): T[] {
-  const shuffledArray = [...array];
-
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-
-  return shuffledArray;
-}
+import shuffle from "~/server/utils/shuffle";
 
 interface Response {
   id: string,

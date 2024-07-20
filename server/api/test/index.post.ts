@@ -1,10 +1,9 @@
 import prisma from "~/lib/prisma";
-import { readAuth } from "~/server/utils/authHandler";
+import { readAuth } from "~/server/utils/auth-handler";
 import { TestData } from "./answer/[id].post";
 
 interface Request {
   testId: string;
-  answers: [{ id: string, answer: number }]
 }
 
 export default defineEventHandler(async (event) => {

@@ -1,6 +1,12 @@
+.vs
+.vscode
+
+.changeset
+.git
+.github
+
 # Nuxt dev/build outputs
 .output
-.data
 .nuxt
 .nitro
 .cache
@@ -22,5 +28,10 @@ logs
 .env
 .env.*
 
-# questions
-prisma/data
+.dockerignore
+Dockerfile
+
+# Prisma
+prisma
+!prisma/schema.prisma
+!prisma/migraitons

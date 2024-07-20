@@ -14,18 +14,20 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "nuxt-gtag",
     "nuxt-icons",
+    "@nuxt/eslint"
   ],
 
   ssr: false,
 
-  /*  nitro: {
-     experimental: {
-       websocket: true
-     }
-   }, */
+  nitro: {
+    compressPublicAssets: true,
+  },
+
   runtimeConfig: {
+    app: {
+      version: '',
+    },
     private: {
-      testId: '',
       authAccessSecret: ''
     },
   },
@@ -42,9 +44,12 @@ export default defineNuxtConfig({
   },
 
   pwa: {
+    scope: '/',
+    base: '/',
+    injectRegister: 'auto',
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Untes',
+      name: 'Untest',
       short_name: 'Untest',
       description: 'Learn by quick question answer competition with peers',
       theme_color: '#0593FA',
@@ -184,22 +189,28 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,jpg,png,webp,svg,ico}'],
+      globPatterns: ['**/*.{html,css,js,jpg,png,svg,webp,ico}'],
+      runtimeCaching: [
+        {
+          urlPattern: '/',
+          handler: 'NetworkFirst',
+        },
+      ],
+      navigateFallback: undefined,
     },
     client: {
       installPrompt: true,
       periodicSyncForUpdates: 3600,
     },
     devOptions: {
-      enabled: false,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
       type: 'module',
+      enabled: false,
+      suppressWarnings: false,
+      navigateFallback: undefined,
     },
   },
 
   gtag: {
-    id: 'G-JZ7WJFETDL'
   },
 
   compatibilityDate: '2024-07-09',
