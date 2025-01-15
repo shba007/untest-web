@@ -1,7 +1,6 @@
-import prisma from '~/lib/prisma'
+import prisma from '~~/lib/prisma'
 import type { Question } from '~/utils/models'
 import type { TestData } from './answer/[id].post'
-import shuffle from '~/server/utils/shuffle'
 
 interface Response {
   id: string
@@ -28,21 +27,23 @@ export default defineEventHandler<Promise<Response>>(async (event) => {
     return {
       id: testId,
       questions: shuffle(
-        test.questions.map<Question>(({ id, question, options, answer, tags }) => {
+        test.questions.map(({ id, question, options, answer, tags }: { id: number; question: string; options: string[]; answer: string; tags: string[] }) => {
           return {
             id: id.toString(),
             question: question,
             options: options,
             answer: answer,
-            tags: tags as string[],
+            tags: tags,
           }
         })
       ),
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('API test/[id] GET', error)
 
-    if (error?.statusCode) throw error
+    if (error instanceof Error && 'statusCode' in error) {
+      throw error
+    }
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }

@@ -1,16 +1,14 @@
-import type { Role, Tag } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
+/* eslint-disable */
+import prisma from '../lib/prisma'
 
 import fs from 'node:fs'
 import path from 'node:path'
-import yaml from 'yaml'
-
-const prisma = new PrismaClient()
+import { parseYAML } from 'confbox'
 
 function readFileConstractor<T>(fileName: string, type: 'seed' | 'backup') {
   const filePath = path.join(process.cwd(), `/prisma/data/${type}/${fileName}.yml`)
   const fileContents = fs.readFileSync(filePath, 'utf8')
-  return yaml.parse(fileContents) as T[]
+  return parseYAML(fileContents) as T[]
 }
 
 function readFile<T>(fileName: string) {
@@ -256,12 +254,4 @@ async function main() {
   // await printResults()
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+await main()

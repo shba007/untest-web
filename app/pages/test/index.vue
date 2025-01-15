@@ -18,13 +18,7 @@ onMounted(() => {
   <main class="flex h-screen flex-col items-center gap-4 overflow-hidden">
     <h1 class="text-lg">All Tests</h1>
     <section class="relative grid w-full grow grid-cols-4 justify-between gap-2 overflow-y-scroll">
-      <TopicCard
-        v-for="({ id, createdAt, isComplete }, index) of days"
-        :key="id"
-        :topic="(index + 1).toString()"
-        :color="index % 2 === 0 ? 'red' : 'blue'"
-        :done="isComplete"
-        @click="goToTest(id, isComplete)" />
+      <TopicCard v-for="({ id, isComplete }, index) of days" :key="id" :topic="(index + 1).toString()" :color="index % 2 === 0 ? 'red' : 'blue'" :done="isComplete" @click="goToTest(id, isComplete)" />
     </section>
     <span />
     <AppButton title="Go to Leaderboard" href="/leaderboard" class="mt-auto" />

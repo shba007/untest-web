@@ -1,0 +1,9 @@
+name: 'untest'
+services:
+  app:
+    image: 'ghcr.io/shba007/untest-web:latest'
+    restart: on-failure:3
+    env_file:
+      - .env.prod
+    ports:
+      - 4201:3000

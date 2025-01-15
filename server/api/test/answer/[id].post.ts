@@ -19,10 +19,12 @@ export default defineEventHandler(async (event) => {
     testData.answers.push({ id, answer })
 
     await useStorage('data').setItem<TestData>(`test:${userId}:${testId}`, testData)
-  } catch (error: any) {
-    console.error('API test/ansser/[id] POST', error)
+  } catch (error: unknown) {
+    console.error('API test/answer/[id] POST', error)
 
-    if (error?.statusCode) throw error
+    if (error instanceof Error && 'statusCode' in error) {
+      throw error
+    }
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }

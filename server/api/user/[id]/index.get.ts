@@ -1,4 +1,4 @@
-import prisma from '~/lib/prisma'
+import prisma from '~~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   try {
     if (!id) throw createError({ statusCode: 400, statusMessage: `Invalid Id ${id}` })
 
-    const userId = readAuth(event)
+    // const userId = readAuth(event)
 
     const { name, results } = await prisma.user.findUniqueOrThrow({
       where: { id },
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
         duration: totalDuration,
       },
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`API user/${id} GET`, error)
 
     if (error?.statusCode) throw error

@@ -2,7 +2,7 @@
   <img src="./public/logo.png" lt="Logo" width="65" />
 <p>
 
-# Untest
+# Untest Web
 
 > Learn by quick question answer competition with peers
 

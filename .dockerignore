@@ -30,8 +30,3 @@ logs
 
 .dockerignore
 Dockerfile
-
-# Prisma
-prisma
-!prisma/schema.prisma
-!prisma/migraitons

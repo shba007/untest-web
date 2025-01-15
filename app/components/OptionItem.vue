@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   index: number
   value: string
   state: 'neutral' | 'selected' | 'wrong' | 'right'

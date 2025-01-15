@@ -2,7 +2,7 @@ export const useTestStore = defineStore('test', () => {
   const id = ref<string | null>()
   const questions = ref<Question[]>([])
   const answers = ref<Answer[]>([])
-  const { counter, resume, pause, reset: counterReset, isActive: counterIsActive } = useInterval(1000, { controls: true })
+  const { counter, pause, reset: counterReset, isActive: counterIsActive } = useInterval(1000, { controls: true })
 
   const stats = computed(() => {
     const [correctCount, incorrectCount] = answers.value.reduce(

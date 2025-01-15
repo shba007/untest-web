@@ -5,7 +5,7 @@ const router = useRouter()
 const testStore = useTestStore()
 const testId = route.params.id
 
-const { data, pending, error } = useFetch(`/api/test/${testId}`, { method: 'get', onRequest: authInterceptor })
+const { data } = useFetch(`/api/test/${testId}`, { method: 'get', onRequest: authInterceptor })
 
 watch(data, (value) => {
   if (!value) return
@@ -63,7 +63,7 @@ function calculateState(index: number) {
 
 watch(testStore.answers, async (value) => {
   if (value.length >= 10) {
-    const { data, pending, error } = await useFetch(`/api/test`, {
+    await $fetch(`/api/test`, {
       method: 'post',
       body: testStore.getResult(),
       onRequest: authInterceptor,
@@ -90,8 +90,8 @@ watch(testStore.answers, async (value) => {
           {{ item.question }}
         </h1>
         <ul class="flex flex-col gap-6">
-          <li v-for="(option, index) in item.options">
-            <Option :index="index + 1" :value="option" :state="calculateState(index)" @click="onOptionChange(index)" />
+          <li v-for="(option, index) in item.options" :key="option">
+            <OptionItem :index="index + 1" :value="option" :state="calculateState(index)" @click="onOptionChange(index)" />
           </li>
         </ul>
       </div>

@@ -11,7 +11,7 @@ const testId = route.params.id
 // const { data, pending, error } = await useFetch(`/api/test`, {
 //   method: 'post', body: testStore.getResult(), onRequest: authInterceptor
 // })
-const { data, pending, error } = useFetch(`/api/result/${testId}`, { onRequest: authInterceptor })
+const { data } = useFetch(`/api/result/${testId}`, { onRequest: authInterceptor })
 
 watch(data, (value) => {
   if (value && value.correctCount >= 8)
@@ -26,7 +26,7 @@ watch(data, (value) => {
 <template>
   <main class="flex h-screen flex-col items-center justify-center gap-8">
     <section class="mt-8">
-      <Avatar :name="userStore.name ?? ''" />
+      <UserAvatar :name="userStore.name ?? ''" />
     </section>
     <h2 class="text-xl">{{ userStore.name?.split(' ')[0] }}'s Report</h2>
     <section v-if="data" class="mb-auto flex w-full items-start justify-between">

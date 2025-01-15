@@ -1,5 +1,5 @@
-import prisma from '~/lib/prisma'
-import { readAuth } from '~/server/utils/auth-handler'
+import prisma from '~~/lib/prisma'
+import { readAuth } from '~~/server/utils/auth-handler'
 import type { TestData } from './answer/[id].post'
 
 interface Request {
@@ -46,10 +46,12 @@ export default defineEventHandler(async (event) => {
     })
 
     return result
-  } catch (error: any) {
-    console.error(`API result POST`, error)
+  } catch (error: unknown) {
+    console.error('API result POST', error)
 
-    if (error?.statusCode) throw error
+    if (error instanceof Error && 'statusCode' in error) {
+      throw error
+    }
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
   }

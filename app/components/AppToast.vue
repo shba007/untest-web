@@ -13,6 +13,8 @@ const icon = computed(() => {
       return 'toast-exclamation'
     case 'alert':
       return 'toast-cross'
+    default:
+      return ''
   }
 })
 </script>

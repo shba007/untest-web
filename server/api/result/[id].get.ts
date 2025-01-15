@@ -1,4 +1,4 @@
-import prisma from '~/lib/prisma'
+import prisma from '~~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   const testId = getRouterParam(event, 'id')
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     // TODO: Test Id not found
 
     return result
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`API result/${testId} GET`, error)
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })

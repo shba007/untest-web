@@ -1,4 +1,4 @@
-import prisma from '~/lib/prisma'
+import prisma from '~~/lib/prisma'
 import { Prisma } from '@prisma/client'
 import JWT from 'jsonwebtoken'
 
@@ -43,13 +43,17 @@ export default defineEventHandler<Promise<Response>>(async (event) => {
       accessToken: accessToken,
       refreshToken: '',
     }
-  } catch (error: any) {
-    console.error(`API result POST`, error)
+  } catch (error: unknown) {
+    console.error('API result POST', error)
 
-    if (error?.statusCode) throw error
+    if (error instanceof Error && 'statusCode' in error) {
+      throw error
+    }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2025') throw createError({ statusCode: 404, statusMessage: `${email} user not found` })
+      if (error.code === 'P2025') {
+        throw createError({ statusCode: 404, statusMessage: `${email} user not found` })
+      }
     }
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
