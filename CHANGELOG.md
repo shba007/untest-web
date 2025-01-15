@@ -1,5 +1,11 @@
 # untest-web
 
+## 0.3.1
+
+### Patch Changes
+
+- c77e140: chore: update project structure and configuration files
+
 ## 0.3.0
 
 ### Minor Changes
