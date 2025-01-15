@@ -1,19 +1,18 @@
-import { PrismaClient } from '@prisma/client'
+/* eslint-disable */
+import prisma from '../lib/prisma'
 
 import fs from 'node:fs'
 import path from 'node:path'
-import yaml from 'yaml'
+import { stringifyYAML } from 'confbox'
 
-const prisma = new PrismaClient()
-
-function writeFileConstractor(fileName: string, data: any, type: 'seed' | 'backup') {
+function writeFileConstructor(fileName: string, data: any, type: 'seed' | 'backup') {
   const filePath = path.join(process.cwd(), `/prisma/data/${type}/${fileName}.yml`)
   // JSON -> YML
-  fs.writeFileSync(filePath, yaml.stringify(data), 'utf8')
+  fs.writeFileSync(filePath, stringifyYAML(data), 'utf8')
 }
 
 function writeFile(fileName: string, data: any) {
-  return writeFileConstractor(fileName, data, 'backup')
+  return writeFileConstructor(fileName, data, 'backup')
 }
 
 async function getUsers() {
@@ -64,12 +63,4 @@ async function main() {
   await getTests()
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+await main()
