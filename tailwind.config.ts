@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+import type { Config } from 'tailwindcss'
+
+export default <Partial<Config>>{
   content: ['components/**/*.{vue,js,ts}', 'layouts/**/*.vue', 'pages/**/*.vue', 'App.{js,ts,vue}', 'app.{js,ts,vue}', 'Error.{js,ts,vue}', 'error.{js,ts,vue}'],
   darkMode: 'class',
   theme: {
@@ -19,10 +20,10 @@ export default {
       // body: ['"Exo 2"', 'sans-serif'],
     },
     fontWeight: {
-      light: 300,
-      regular: 400,
-      'semi-bold': 500,
-      bold: 600,
+      light: '300',
+      regular: '400',
+      'semi-bold': '500',
+      bold: '600',
     },
     colors: {
       transparent: 'transparent',

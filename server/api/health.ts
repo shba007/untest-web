@@ -1,3 +1,5 @@
-export default defineEventHandler<{ status: string }>(() => {
-  return { status: 'OK' }
+export default defineEventHandler(() => {
+  const config = useRuntimeConfig().app
+
+  return { status: 'OK', ...config }
 })
