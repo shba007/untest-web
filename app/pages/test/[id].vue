@@ -5,7 +5,7 @@ const router = useRouter()
 const testStore = useTestStore()
 const testId = route.params.id
 
-const { data } = useFetch(`/api/test/${testId}`, { method: 'get', onRequest: authInterceptor })
+const { data } = useFetch(`/api/test/${testId}`, { method: 'get', headers: getAuthHeaders() })
 
 watch(data, (value) => {
   if (!value) return
@@ -49,7 +49,7 @@ async function onSubmit() {
   isSubmitted.value = true
   future.value = now.value.getTime() + 2000
 
-  await $fetch(`/api/test/answer/${testId}`, { method: 'post', body: answerData, onRequest: authInterceptor })
+  await $fetch(`/api/test/answer/${testId}`, { method: 'post', body: answerData, headers: getAuthHeaders() })
 }
 
 function calculateState(index: number) {
@@ -66,7 +66,7 @@ watch(testStore.answers, async (value) => {
     await $fetch(`/api/test`, {
       method: 'post',
       body: testStore.getResult(),
-      onRequest: authInterceptor,
+      headers: getAuthHeaders(),
     })
     router.push({ path: `/result/${testId}` })
   }

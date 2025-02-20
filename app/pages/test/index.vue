@@ -2,7 +2,7 @@
 const router = useRouter()
 const testStore = useTestStore()
 
-const { data: days } = useFetch('/api/test', { method: 'get', onRequest: authInterceptor })
+const { data: days } = useFetch('/api/test', { method: 'get', headers: getAuthHeaders() })
 
 function goToTest(id: string, isComplete: boolean) {
   if (!isComplete) router.push({ path: `/test/${id}` })

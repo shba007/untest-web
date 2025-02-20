@@ -28,7 +28,7 @@ const lastCount = computed(() => {
   return datePreset.count
 })
 
-const { data: users } = await useFetch('/api/user', { method: 'get', onRequest: authInterceptor, query: { lastCount: lastCount } })
+const { data: users } = await useFetch('/api/user', { method: 'get', headers: getAuthHeaders(), query: { lastCount: lastCount } })
 </script>
 
 <template>

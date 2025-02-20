@@ -9,9 +9,9 @@ const testStore = useTestStore()
 const testId = route.params.id
 
 // const { data, pending, error } = await useFetch(`/api/test`, {
-//   method: 'post', body: testStore.getResult(), onRequest: authInterceptor
+//   method: 'post', body: testStore.getResult(), headers: getAuthHeaders()
 // })
-const { data } = useFetch(`/api/result/${testId}`, { onRequest: authInterceptor })
+const { data } = useFetch(`/api/result/${testId}`, { headers: getAuthHeaders() })
 
 watch(data, (value) => {
   if (value && value.correctCount >= 8)
