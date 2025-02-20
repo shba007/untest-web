@@ -1,5 +1,11 @@
 # untest-web
 
+## 0.3.3
+
+### Patch Changes
+
+- 1870271: fix: replace authInterceptor with getAuthHeaders for API requests
+
 ## 0.3.2
 
 ### Patch Changes
