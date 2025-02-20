@@ -1,5 +1,11 @@
 # untest-web
 
+## 0.3.2
+
+### Patch Changes
+
+- 6cc6080: chore: packages updated, db migrated from neon to local
+
 ## 0.3.1
 
 ### Patch Changes
