@@ -34,3 +34,6 @@ services:
 networks:
   front-tier:
     driver: overlay
+
+volumes:
+  db-data:
