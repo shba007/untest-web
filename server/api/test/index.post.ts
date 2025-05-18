@@ -1,4 +1,4 @@
-import prisma from '~~/lib/prisma'
+import prisma from '~~/server/utils/prisma'
 import { readAuth } from '~~/server/utils/auth-handler'
 import type { TestData } from './answer/[id].post'
 

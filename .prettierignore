@@ -1,8 +1,9 @@
 # Nuxt dev/build outputs
-.output
+.cache
+.data
 .nuxt
 .nitro
-.cache
+.output
 dist
 
 # Node dependencies
@@ -10,7 +11,7 @@ node_modules
 
 # Package Manager
 package.json
-pnpm-lock.yaml
+bun.lock
 
 # Logs
 logs

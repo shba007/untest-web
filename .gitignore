@@ -1,9 +1,9 @@
 # Nuxt dev/build outputs
-.output
+.cache
 .data
 .nuxt
 .nitro
-.cache
+.output
 dist
 
 # Node dependencies
@@ -24,4 +24,7 @@ logs
 !.env.example
 
 # Prisma files
+prisma/*.db
+prisma/*.db-*
+prisma/generated
 prisma/data

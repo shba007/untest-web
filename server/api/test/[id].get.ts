@@ -1,4 +1,4 @@
-import prisma from '~~/lib/prisma'
+import prisma from '~~/server/utils/prisma'
 import type { Question } from '~/utils/models'
 import type { TestData } from './answer/[id].post'
 

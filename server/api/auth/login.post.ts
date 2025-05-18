@@ -1,4 +1,4 @@
-import prisma from '~~/lib/prisma'
+import prisma from '~~/server/utils/prisma'
 import { Prisma } from '@prisma/client'
 import JWT from 'jsonwebtoken'
 
