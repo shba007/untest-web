@@ -1,5 +1,17 @@
 # untest-web
 
+## v0.3.4
+
+[compare changes](https://github.com/shba007/untest-web/compare/v0.3.3...v0.3.4)
+
+### 💅 Refactors
+
+- Docker swarm, github ci/cd, bun added, changelogen added ([aee2196](https://github.com/shba007/untest-web/commit/aee2196))
+
+### ❤️ Contributors
+
+- Shba007 ([@shba007](https://github.com/shba007))
+
 ## 0.3.3
 
 ### Patch Changes
