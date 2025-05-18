@@ -1,5 +1,17 @@
 # untest-web
 
+## v0.3.5
+
+[compare changes](https://github.com/shba007/untest-web/compare/v0.3.4...v0.3.5)
+
+### 🩹 Fixes
+
+- Update docker stack deployment name and add postgres service to docker-compose ([2e1b1da](https://github.com/shba007/untest-web/commit/2e1b1da))
+
+### ❤️ Contributors
+
+- Shba007 ([@shba007](https://github.com/shba007))
+
 ## v0.3.4
 
 [compare changes](https://github.com/shba007/untest-web/compare/v0.3.3...v0.3.4)
